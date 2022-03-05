@@ -35,7 +35,7 @@ class StoreOperationImplTest {
     public void setUp(){
         application = new ApplicationImpl();
         CustomerService customerService = new CustomerServiceImpl();
-        storeOperation = new StoreOperationImpl();
+        storeOperation = StoreOperationImpl.getStoreOperationImplInstance();
         customer = new Customer("Stephen", "Gerald", "ETP", Gender.MALE);
         store = new Store("Stevade Collections");
         manager = new Staff("Sola", "Smith", "Tech Park, Edo", Gender.MALE, Role.MANAGER);

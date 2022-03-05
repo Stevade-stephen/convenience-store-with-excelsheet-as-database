@@ -18,7 +18,7 @@ public class Main {
 
         System.out.println(Arrays.toString(sdtStores.getListOfProductsInStore()));
 
-        StoreOperation storeOperation = new StoreOperationImpl();
+        StoreOperation storeOperation = StoreOperationImpl.getStoreOperationImplInstance();
         System.out.println(Arrays.toString(storeOperation.viewProductsByCategory(sdtStores, "Shoes")));
 
         Customer samuel = new Customer("Samuel", "Adjei", "brooks street uyo", Gender.MALE);

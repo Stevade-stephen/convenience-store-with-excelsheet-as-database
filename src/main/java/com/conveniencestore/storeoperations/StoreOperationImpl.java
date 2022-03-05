@@ -14,6 +14,18 @@ import static com.conveniencestore.enums.ProductAvailability.*;
 import static com.conveniencestore.enums.Qualification.OND;
 
 public class StoreOperationImpl implements StoreOperation {
+    private static StoreOperationImpl INSTANCE;
+
+    private StoreOperationImpl (){
+
+    }
+
+    public static StoreOperationImpl getStoreOperationImplInstance() {
+        if (INSTANCE == null){
+            INSTANCE = new StoreOperationImpl();
+        }
+        return INSTANCE;
+    }
     @Override
     public void hireCashier(Applicant applicant, Staff staff, Store store) {
         if (staff.getRole().equals(Role.MANAGER)) {
