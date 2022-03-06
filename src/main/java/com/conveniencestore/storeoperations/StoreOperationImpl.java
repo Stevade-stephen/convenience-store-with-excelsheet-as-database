@@ -64,14 +64,14 @@ public class StoreOperationImpl implements StoreOperation {
                 Integer quantity = products.getValue();
                 totalCostOfProductsInCart += getTotalCostOfProductsInCart(product, quantity);
             }
-            return checkIfCustomerHasEnoughFunds(store, customer, staff, totalCostOfProductsInCart);
+            return generateReceiptIfCustomerHasEnoughFunds(store, customer, staff, totalCostOfProductsInCart);
         } else {
             throw new StaffNotAuthorizedException("You are not authorized to sell products");
         }
 
     }
 
-    private String checkIfCustomerHasEnoughFunds(Store store, Customer customer, Staff staff, double totalCostOfProductsInCart) {
+    private String generateReceiptIfCustomerHasEnoughFunds(Store store, Customer customer, Staff staff, double totalCostOfProductsInCart) {
         if (customer.getWallet().getBalance() >= totalCostOfProductsInCart) {
             double newWalletBalance = customer.getWallet().getBalance() - totalCostOfProductsInCart;
             customer.getWallet().setBalance(newWalletBalance);
