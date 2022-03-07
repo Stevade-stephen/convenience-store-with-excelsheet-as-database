@@ -1,9 +1,7 @@
 package com.conveniencestore.models;
 
-import com.conveniencestore.enums.ProductAvailability;
 import com.conveniencestore.enums.ProductCategory;
 import lombok.Data;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,9 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Data
 public class Store {
@@ -23,6 +22,9 @@ public class Store {
     private List<Transaction> transactions;
     private Product[] listOfProductsInStore;
     private final String excelFilePath;
+    private ReadWriteLock lock = new ReentrantReadWriteLock();
+    private Lock readLock = lock.readLock();
+    private Lock writeLock = lock.writeLock();
 
     {
         excelFilePath = "./src/main/resources/Contries.xlsx";
@@ -36,6 +38,14 @@ public class Store {
         this.listOfProductsInStore = loadProductsFromSheet();
     }
 
+    public Product [] getListOfProductsInStore(){
+        try {
+            readLock.lock();
+            return this.listOfProductsInStore;
+        } finally {
+            readLock.unlock();
+        }
+    }
 
     private Product[] loadProductsFromSheet() {
         try (FileInputStream fileInputStream = new FileInputStream(excelFilePath)) {
