@@ -8,6 +8,10 @@ import com.conveniencestore.models.Customer;
 import com.conveniencestore.models.Product;
 import com.conveniencestore.models.Store;
 
+import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import static com.conveniencestore.enums.ProductAvailability.*;
 
 public class CustomerServiceImpl implements CustomerService {
@@ -21,8 +25,8 @@ public class CustomerServiceImpl implements CustomerService {
                         System.out.println(product.getName() + " has been added to " + customer.getFirstName() + "'s cart.");
                         break;
                     } else
-                        throw new QuantityExceededException("We do not have up to " + quantity
-                                + " available, " + "only " + product.getQuantity() + " is/are left.");
+                        throw new QuantityExceededException("You cannot add up to " + quantity
+                                + " to your cart, " + "only " + product.getQuantity() + " is/are left.");
                 }
                 else throw new OutOfStockException("This product is out of stock");
             }

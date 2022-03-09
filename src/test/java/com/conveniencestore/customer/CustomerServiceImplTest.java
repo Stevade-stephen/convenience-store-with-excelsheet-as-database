@@ -49,7 +49,8 @@ class CustomerServiceImplTest {
         int quantity = 8;
         assertThatThrownBy( () ->  customerService.addProductsToCart(customer, store, "Lewis", quantity))
                 .isInstanceOf(QuantityExceededException.class)
-                .hasMessage("We do not have up to " + quantity + " available, " + "only " + 7 + " is/are left.");
+                .hasMessage("You cannot add up to " + quantity
+                        + " to your cart, " + "only " + 7 + " is/are left.");
     }
 
     @Test
