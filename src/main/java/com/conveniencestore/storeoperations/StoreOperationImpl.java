@@ -56,17 +56,26 @@ public class StoreOperationImpl implements StoreOperation {
 
     @Override
     public String sellProducts(Store store, Customer customer, Staff staff) {
-        if (staff.getRole().equals(Role.CASHIER)) {
-            double totalCostOfProductsInCart = customer.getCart().getTotalCostOfProductsInCart();
-            Map<Product, Integer> productsInCart = customer.getCart().getProductsInCart();
-            for (Map.Entry<Product, Integer> products : productsInCart.entrySet()) {
-                Product product = products.getKey();
-                Integer quantity = products.getValue();
-                totalCostOfProductsInCart += getTotalCostOfProductsInCart(product, quantity);
+        try {
+            if (staff.getRole().equals(Role.CASHIER)) {
+                double totalCostOfProductsInCart = customer.getCart().getTotalCostOfProductsInCart();
+                Map<Product, Integer> productsInCart = customer.getCart().getProductsInCart();
+                if (productsInCart.size() == 0) throw new Exception("there is no product in cart");
+                for (Map.Entry<Product, Integer> products : productsInCart.entrySet()) {
+                    Product product = products.getKey();
+                    Integer quantity = products.getValue();
+                    totalCostOfProductsInCart += getTotalCostOfProductsInCart(product, quantity);
+                }
+
+                if(totalCostOfProductsInCart == 0) throw new OutOfStockException("this product is out of Stock");
+                double finalTotalCostOfProductsInCart = totalCostOfProductsInCart;
+                String receipt = generateReceiptIfCustomerHasEnoughFunds(store, customer, staff, finalTotalCostOfProductsInCart);
+                return "Current thread is " + Thread.currentThread().getName() + " " + receipt;
+            } else {
+                throw new StaffNotAuthorizedException("You are not authorized to sell products");
             }
-            return generateReceiptIfCustomerHasEnoughFunds(store, customer, staff, totalCostOfProductsInCart);
-        } else {
-            throw new StaffNotAuthorizedException("You are not authorized to sell products");
+        } catch (Exception exception ) {
+            return "Current thread is " + Thread.currentThread().getName() + ": could not finish transaction for " + customer.getFirstName() + " because " + exception.getMessage();
         }
 
     }
@@ -129,17 +138,19 @@ public class StoreOperationImpl implements StoreOperation {
 
     private double getTotalCostOfProductsInCart(Product product, Integer quantity) {
         double totalCostOfProductsInCart;
-        if(product.getProductAvailability().equals(AVAILABLE)) {
-            if (product.getQuantity() >= quantity) {
-                totalCostOfProductsInCart = product.getPrice() * quantity;
-                product.setQuantity(product.getQuantity() - quantity);
-                product.checkAndSetAvailability();
-                return totalCostOfProductsInCart;
-            } else {
-                throw new QuantityExceededException("We do not have up to " + quantity
-                        + " available, " + "only " + product.getQuantity() + " is/are left.");
-            }
+        synchronized (this) {
+            if (product.getProductAvailability().equals(AVAILABLE)) {
+                if (product.getQuantity() >= quantity) {
+                    totalCostOfProductsInCart = product.getPrice() * quantity;
+                    product.setQuantity(product.getQuantity() - quantity);
+                    product.checkAndSetAvailability();
+                    return totalCostOfProductsInCart;
+                } else {
+                    throw new QuantityExceededException("We do not have up to " + quantity
+                            + " available, " + "only " + product.getQuantity() + " is/are left.");
+                }
+            } else
+                throw new OutOfStockException("Product " + product.getName() + " is no longer available in the store");
         }
-        else throw new OutOfStockException("Product " + product.getName() + " is no longer available in the store");
     }
 }
