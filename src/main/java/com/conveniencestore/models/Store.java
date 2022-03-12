@@ -9,7 +9,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -25,6 +27,7 @@ public class Store {
     private ReadWriteLock lock = new ReentrantReadWriteLock();
     private Lock readLock = lock.readLock();
     private Lock writeLock = lock.writeLock();
+    private Set<Customer> multithreadedList;
 
     {
         excelFilePath = "./src/main/resources/Contries.xlsx";
@@ -35,6 +38,7 @@ public class Store {
         this.applicants = new ArrayList<>();
         this.staffs = new ArrayList<>();
         this.transactions = new ArrayList<>();
+        this.multithreadedList = new HashSet<>();
         this.listOfProductsInStore = loadProductsFromSheet();
     }
 
