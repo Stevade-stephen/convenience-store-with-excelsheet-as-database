@@ -55,13 +55,13 @@ class CustomerServiceImplTest {
 
     @Test
     void canFundCustomerWalletSuccessfully() {
-        customerService.fundWallet(customer, 1000000.00);
+        customerService.fundCustomerWallet(customer, 1000000.00);
         assertThat(customer.getWallet().getBalance()).isEqualTo(1000000.00);
 
-        customerService.fundWallet(customer, 4000000.00);
+        customerService.fundCustomerWallet(customer, 4000000.00);
         assertThat(customer.getWallet().getBalance()).isEqualTo(5000000.00);
 
-        customerService.fundWallet(customer, 0);
+        customerService.fundCustomerWallet(customer, 0);
         assertThat(customer.getWallet().getBalance()).isEqualTo(5000000.00);
 
     }
