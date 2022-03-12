@@ -150,7 +150,7 @@ public class StoreOperationImpl implements StoreOperation {
                             + " available, " + "only " + product.getQuantity() + " is/are left.");
                 }
             } else
-                throw new OutOfStockException("Product " + product.getName() + " is no longer available in the store");
+                throw new OutOfStockException("Product " + product.getName() + " out of stock");
         }
     }
 }

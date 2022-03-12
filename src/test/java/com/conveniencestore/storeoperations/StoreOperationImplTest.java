@@ -19,7 +19,6 @@ import java.util.Arrays;
 import static com.conveniencestore.enums.Qualification.OND;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class StoreOperationImplTest {
     private Application application;
@@ -41,7 +40,7 @@ class StoreOperationImplTest {
         manager = new Staff("Sola", "Smith", "Tech Park, Edo", Gender.MALE, Role.MANAGER);
         cashier = new Staff("Sola", "Smith", "Tech Park, Edo", Gender.MALE, Role.CASHIER);
         jane = new Applicant("Jane", "Emeka", "No 10 Adejo str, Lagos", Gender.FEMALE, Qualification.OND);
-        customerService.fundWallet(customer, 1000000.00);
+        customerService.fundCustomerWallet(customer, 1000000.00);
         customerService.addProductsToCart(customer, store, "Lewis", 7);
     }
 
