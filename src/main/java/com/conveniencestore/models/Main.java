@@ -9,7 +9,6 @@ import com.conveniencestore.storeoperations.StoreOperation;
 import com.conveniencestore.storeoperations.StoreOperationImpl;
 
 import java.util.Arrays;
-import java.util.Set;
 
 
 public class Main {
@@ -32,12 +31,13 @@ public class Main {
         customerMenu.addProductsToCart(samuel, sdtStores, "Lewis", 4);
         customerMenu.addProductsToCart(robin, sdtStores, "Lewis", 4);
         customerMenu.addProductsToCart(mike, sdtStores, "Lewis", 2);
-        customerMenu.fundWallet(samuel, 1000000.00);
-        customerMenu.fundWallet(robin, 1000000.00);
-        customerMenu.fundWallet(mike, 1000000.00);
+        customerMenu.addProductsToCart(roy, sdtStores, "Lewis", 1);
+        customerMenu.fundCustomerWallet(samuel, 1000000.00);
+        customerMenu.fundCustomerWallet(robin, 1000000.00);
+        customerMenu.fundCustomerWallet(mike, 1000000.00);
+        customerMenu.fundCustomerWallet(roy, 1000000.00);
 
-//        System.out.println(storeOperation.sellProducts(sdtStores,samuel,jane));
         MultipleSelling sell = new MultipleSelling();
-        sell.multipleSelling(sdtStores, Set.of(samuel, robin, mike), jane, 2);
+        sell.multipleSelling(sdtStores, jane, 3);
     }
 }
