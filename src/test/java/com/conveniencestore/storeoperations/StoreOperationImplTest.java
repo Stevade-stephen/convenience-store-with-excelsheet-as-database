@@ -90,8 +90,10 @@ class StoreOperationImplTest {
         Product[] shoes = storeOperation.viewProductsByCategory(store, "Shoes");
         Product[] clothes = storeOperation.viewProductsByCategory(store, "Clothing");
         Product[] hangers = storeOperation.viewProductsByCategory(store, "Hangers");
+        Product[] furniture = storeOperation.viewProductsByCategory(store, "furniture");
 
         assertThat(hangers.length).isZero();
+        assertThat(furniture.length).isZero();
         assertThat(shoes.length).isEqualTo(2);
         assertThat(clothes.length).isEqualTo(2);
         assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equals("Polo"))).isTrue();
