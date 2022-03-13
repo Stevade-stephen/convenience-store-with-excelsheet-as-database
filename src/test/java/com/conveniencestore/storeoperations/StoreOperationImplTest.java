@@ -96,11 +96,11 @@ class StoreOperationImplTest {
         assertThat(furniture.length).isZero();
         assertThat(shoes.length).isEqualTo(2);
         assertThat(clothes.length).isEqualTo(2);
-        assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equals("Polo"))).isTrue();
-        assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equals("Gucci & Gabanna"))).isTrue();
-        assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equals("Lewis"))).isFalse();
-        assertThat(Arrays.stream(shoes).anyMatch(product -> product.getName().equals("Lewis"))).isTrue();
-        assertThat(Arrays.stream(shoes).anyMatch(product -> product.getName().equals("Vans"))).isTrue();
-        assertThat(Arrays.stream(shoes).anyMatch(product -> product.getName().equals("Polo"))).isFalse();
+        assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equalsIgnoreCase("Polo"))).isTrue();
+        assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equalsIgnoreCase("Gucci & Gabanna"))).isTrue();
+        assertThat(Arrays.stream(clothes).anyMatch(product -> product.getName().equalsIgnoreCase("Lewis"))).isFalse();
+        assertThat(Arrays.stream(shoes).anyMatch(product -> product.getName().equalsIgnoreCase("Lewis"))).isTrue();
+        assertThat(Arrays.stream(shoes).anyMatch(product -> product.getName().equalsIgnoreCase("Vans"))).isTrue();
+        assertThat(Arrays.stream(shoes).anyMatch(product -> product.getName().equalsIgnoreCase("Polo"))).isFalse();
     }
 }
