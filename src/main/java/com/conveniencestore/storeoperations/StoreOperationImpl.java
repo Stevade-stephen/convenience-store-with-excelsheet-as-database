@@ -137,20 +137,28 @@ public class StoreOperationImpl implements StoreOperation {
     }
 
     private double getTotalCostOfProductsInCart(Product product, Integer quantity) {
-        double totalCostOfProductsInCart;
         synchronized (this) {
             if (product.getProductAvailability().equals(AVAILABLE)) {
-                if (product.getQuantity() >= quantity) {
-                    totalCostOfProductsInCart = product.getPrice() * quantity;
-                    product.setQuantity(product.getQuantity() - quantity);
-                    product.checkAndSetAvailability();
-                    return totalCostOfProductsInCart;
-                } else {
-                    throw new QuantityExceededException("We do not have up to " + quantity
-                            + " available, " + "only " + product.getQuantity() + " is/are left.");
-                }
+                return getTotalCostOfProductsIfQuantityIsEnoughInStore(product, quantity);
             } else
                 throw new OutOfStockException("Product " + product.getName() + " out of stock");
         }
+    }
+
+    private double getTotalCostOfProductsIfQuantityIsEnoughInStore(Product product, Integer quantity) {
+        double totalCostOfProductsInCart;
+        if (product.getQuantity() >= quantity) {
+            totalCostOfProductsInCart = product.getPrice() * quantity;
+            reduceProductQuantityInStoreAndSetAvailability(product, quantity);
+            return totalCostOfProductsInCart;
+        } else {
+            throw new QuantityExceededException("We do not have up to " + quantity
+                    + " available, " + "only " + product.getQuantity() + " is/are left.");
+        }
+    }
+
+    private void reduceProductQuantityInStoreAndSetAvailability(Product product, int quantity){
+        product.setQuantity(product.getQuantity() - quantity);
+        product.checkAndSetAvailability();
     }
 }
