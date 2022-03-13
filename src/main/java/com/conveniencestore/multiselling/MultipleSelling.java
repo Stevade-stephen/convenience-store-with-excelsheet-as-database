@@ -20,7 +20,7 @@ public class MultipleSelling {
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
 
         try {
-            List<Callable<String>> sellingTasks = sellToMultipleCustomers(store, staff);
+            List<Callable<String>> sellingTasks = sellToMultipleCustomersInStore(store, staff);
 
             List<Future<String>> futures = executorService.invokeAll(sellingTasks);
             futures.forEach(
@@ -33,7 +33,7 @@ public class MultipleSelling {
                     }
             );
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.getCause().printStackTrace();
         }finally {
             executorService.shutdown();
             System.out.println(Arrays.toString(store.getListOfProductsInStore()));
@@ -41,7 +41,7 @@ public class MultipleSelling {
         }
     }
 
-    private List<Callable<String>> sellToMultipleCustomers(Store store, Staff staff) {
+    private List<Callable<String>> sellToMultipleCustomersInStore(Store store, Staff staff) {
         return store.getMultithreadedList().stream()
                 .map(customer -> sellToCustomerInADifferentThread(store, customer, staff))
                 .collect(Collectors.toList());
